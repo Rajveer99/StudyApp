@@ -1,0 +1,15 @@
+<?xml version="1.0" encoding="utf-8"?>
+<menu xmlns:android="http://schemas.android.com/apk/res/android">
+    <item
+        android:title="Back to Main"
+        android:id="@+id/id_Main"
+        android:orderInCategory="101"
+        />
+
+    <item
+        android:title="Enter Password"
+        android:id="@+id/id_password"
+        android:orderInCategory="101"
+        />
+
+</menu>
