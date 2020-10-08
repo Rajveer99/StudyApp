@@ -8,10 +8,9 @@ import android.view.MenuItem;
 import android.view.View;
 import android.widget.Button;
 
-import java.text.SimpleDateFormat;
-import java.util.Calendar;
 
-public class MainActivity extends AppCompatActivity {
+//This is the Main Menu Window
+public class mainMenu extends AppCompatActivity {
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -35,7 +34,7 @@ public class MainActivity extends AppCompatActivity {
     public boolean onOptionsItemSelected(MenuItem item){
         int id = item.getItemId();
         if(id == R.id.About){
-            startActivity(new Intent(MainActivity.this, AboutUs.class));
+            startActivity(new Intent(mainMenu.this, AboutUs.class));
 
             return true;
         }
@@ -50,8 +49,9 @@ public class MainActivity extends AppCompatActivity {
         nextActivityButton.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                startActivity(new Intent(MainActivity.this, second_Activity.class));
+                startActivity(new Intent(mainMenu.this, enterParameters.class));
             }
         });
+
     }
 }

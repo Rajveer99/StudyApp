@@ -6,6 +6,8 @@ import android.os.Bundle;
 
 /**
  * New Activity that should verify the user's passwordd
+ *
+ * Probably need to remove
  */
 public class passwordCheck extends AppCompatActivity {
 

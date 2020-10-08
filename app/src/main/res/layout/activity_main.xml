@@ -4,7 +4,7 @@
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    tools:context=".MainActivity"
+    tools:context=".mainMenu"
     tools:layout_editor_absoluteY="81dp">
 
     <TextClock
@@ -24,7 +24,7 @@
         app:layout_constraintHorizontal_bias="0.471"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toTopOf="parent"
-        app:layout_constraintVertical_bias="0.865"
+        app:layout_constraintVertical_bias="0.902"
         tools:text="@tools:sample/date/hhmm" />
 
     <Button
@@ -46,11 +46,11 @@
         android:id="@+id/textView2"
         android:layout_width="264dp"
         android:layout_height="151dp"
-        android:layout_marginStart="8dp"
-        android:layout_marginTop="8dp"
-        android:layout_marginEnd="8dp"
+        android:layout_marginStart="5dp"
+        android:layout_marginTop="50dp"
+        android:layout_marginEnd="5dp"
         android:layout_marginBottom="400dp"
-        android:text='Welcome Page "Study Less Study Smart"'
+        android:text='"Study Less Study Smart"'
         android:textAlignment="center"
         android:textSize="36sp"
         app:layout_constraintBottom_toBottomOf="parent"
@@ -58,5 +58,5 @@
         app:layout_constraintHorizontal_bias="0.503"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toTopOf="parent"
-        app:layout_constraintVertical_bias="0.691" />
+        app:layout_constraintVertical_bias="0.843" />
 </android.support.constraint.ConstraintLayout>

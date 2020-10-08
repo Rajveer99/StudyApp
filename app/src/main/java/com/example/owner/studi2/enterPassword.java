@@ -9,6 +9,10 @@ import android.os.Bundle;
  */
 public class enterPassword extends AppCompatActivity {
 
+    /**
+     * This is the Enter Page which we will probably need to @DELETE
+     * @param savedInstanceState
+     */
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);

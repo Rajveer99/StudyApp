@@ -13,14 +13,25 @@
         <activity android:name=".passwordCheck" />
         <activity android:name=".AboutUs" />
         <activity android:name=".DisplayStats" />
-        <activity android:name=".second_Activity" />
-        <activity android:name=".MainActivity">
+        <activity android:name=".enterParameters" />
+        <activity android:name=".mainMenu">
             <intent-filter>
                 <action android:name="android.intent.action.MAIN" />
 
                 <category android:name="android.intent.category.LAUNCHER" />
             </intent-filter>
         </activity>
+
+        <receiver android:name=".myAdmin" android:permission="android.permission.BIND_DEVICE_ADMIN">
+            <meta-data android:name="android.app.device_admin"
+                android:resource="@xml/policies" />
+
+            <intent-filter>
+                <action android:name="android.app.action.DEVICE_ADMIN_ENABLED"/>
+            </intent-filter>
+
+        </receiver>
+
     </application>
 
 </manifest>

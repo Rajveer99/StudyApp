@@ -1,7 +1,10 @@
 package com.example.owner.studi2;
 
+import android.app.Activity;
+import android.app.ActivityManager;
+import android.app.admin.DevicePolicyManager;
+import android.content.ComponentName;
 import android.content.Intent;
-import android.graphics.Color;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
 import android.view.Menu;
@@ -11,7 +14,7 @@ import android.widget.Button;
 import android.widget.TextView;
 import android.widget.Toast;
 
-public class second_Activity extends AppCompatActivity {
+public class enterParameters extends AppCompatActivity {
 
     //store data from user
     int breakTimeInput;
@@ -24,7 +27,11 @@ public class second_Activity extends AppCompatActivity {
 
     Button submitButton;
 
+    public static final int RESULT_ENABLE = 11;
 
+    private DevicePolicyManager devicePolicyManager;
+    private ActivityManager activityManager;
+    private ComponentName compName;
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -32,9 +39,18 @@ public class second_Activity extends AppCompatActivity {
         setTitle("Enter Parameters");
         configureNextButton();
 
+        devicePolicyManager = (DevicePolicyManager) getSystemService(DEVICE_POLICY_SERVICE);
+        activityManager = (ActivityManager) getSystemService(ACTIVITY_SERVICE);
+        compName = new ComponentName(this, myAdmin.class);
+
         studyTime = (TextView) findViewById(R.id.study);
         cycles = (TextView) findViewById(R.id.repetitions);
         breakTime = (TextView) findViewById(R.id.breakTime);
+
+        Intent intent1 = new Intent(DevicePolicyManager.ACTION_ADD_DEVICE_ADMIN);
+        intent1.putExtra(DevicePolicyManager.EXTRA_DEVICE_ADMIN, compName);
+        intent1.putExtra(DevicePolicyManager.EXTRA_ADD_EXPLANATION, "Additional text explaining why we need this permission");
+        startActivityForResult(intent1, RESULT_ENABLE);
 
         submitButton = (Button) findViewById(R.id.button);
 
@@ -48,31 +64,28 @@ public class second_Activity extends AppCompatActivity {
                     breakTimeInput = Integer.valueOf(breakTime.getText().toString());
                     cyclesInput = Integer.valueOf(cycles.getText().toString());
 
-                    /**
+
                     if(studyTimeInput == 0 || breakTimeInput == 0 || cyclesInput == 0){
                         createToast("Please enter values greater than 0");
                     }
-                    else if (studyTimeInput < 20 && breakTimeInput > 10) {
+                    else if (studyTimeInput < 15 && breakTimeInput > 10) {
                         createToast("Study Time must be longer 20 minutes and Break Time " +
                                 "must not be longer than 10 minutes");
 
-                    } else if (studyTimeInput < 20) {
+                    } else if (studyTimeInput < 15) {
                         createToast("Study Time must be >= 20 minutes");
                     } else if (breakTimeInput > 10) {
                         createToast("Break Time must < 10 minutes");
 
                     } else {
-                        Intent intent = new Intent(second_Activity.this, DisplayStats.class);
+
+                        Intent intent = new Intent(enterParameters.this, DisplayStats.class);
                         intent.putExtra("StudyTime", studyTimeInput);
                         intent.putExtra("BreakTime", breakTimeInput);
                         intent.putExtra("Cycles", cyclesInput);
                         startActivity(intent);
-                    }*/
-                     Intent intent = new Intent(second_Activity.this, DisplayStats.class);
-                     intent.putExtra("StudyTime", studyTimeInput);
-                     intent.putExtra("BreakTime", breakTimeInput);
-                     intent.putExtra("Cycles", cyclesInput);
-                     startActivity(intent);
+
+                    }
 
                 }catch (Exception e){
                     createToast("Please don't leave anything blank");
@@ -80,6 +93,14 @@ public class second_Activity extends AppCompatActivity {
             }
         });
 
+    }
+
+    @Override
+    protected void onResume() {
+        super.onResume();
+        boolean isActive = devicePolicyManager.isAdminActive(compName);
+        //disable.setVisibility(isActive ? View.VISIBLE : View.GONE);
+        //submitButton.setVisibility(isActive ? View.GONE : View.VISIBLE);
     }
 
     //Creates Toasts
@@ -96,7 +117,7 @@ public class second_Activity extends AppCompatActivity {
         nextActivityButton.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                startActivity(new Intent(second_Activity.this, DisplayStats.class));
+                startActivity(new Intent(enterParameters.this, DisplayStats.class));
             }
         });
     }
@@ -116,16 +137,40 @@ public class second_Activity extends AppCompatActivity {
     public boolean onOptionsItemSelected(MenuItem item){
         int id = item.getItemId();
         if(id == R.id.id_profile){
-            startActivity(new Intent(second_Activity.this, enterPassword.class));
+            startActivity(new Intent(enterParameters.this, enterPassword.class));
 
             //write logic
             return true;
         }
         if(id == R.id.id_set){
-            //write logic
+            devicePolicyManager.removeActiveAdmin(compName);
+            //disable.setVisibility(View.GONE);
+            //enable.setVisibility(View.VISIBLE);
             return true;
         }
+
+        if (id == R.id.id_setEnable){
+            Intent intent1 = new Intent(DevicePolicyManager.ACTION_ADD_DEVICE_ADMIN);
+            intent1.putExtra(DevicePolicyManager.EXTRA_DEVICE_ADMIN, compName);
+            intent1.putExtra(DevicePolicyManager.EXTRA_ADD_EXPLANATION, "Additional text explaining why we need this permission");
+            startActivityForResult(intent1, RESULT_ENABLE);
+        }
+
         return true;
+    }
+    @Override
+    protected void onActivityResult(int requestCode, int resultCode, Intent data) {
+        switch(requestCode) {
+            case RESULT_ENABLE :
+                if (resultCode == Activity.RESULT_OK) {
+                    Toast.makeText(enterParameters.this, "You have enabled the Admin Device features", Toast.LENGTH_SHORT).show();
+                } else {
+                    Toast.makeText(enterParameters.this, "Problem to enable the Admin Device features", Toast.LENGTH_SHORT).show();
+                }
+                break;
+        }
+
+        super.onActivityResult(requestCode, resultCode, data);
     }
 }
 

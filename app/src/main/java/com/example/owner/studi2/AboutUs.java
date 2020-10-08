@@ -5,6 +5,9 @@ import android.os.Bundle;
 
 public class AboutUs extends AppCompatActivity {
 
+    /*
+    This is the About us Page
+     */
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);

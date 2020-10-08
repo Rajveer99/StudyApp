@@ -7,28 +7,14 @@
     tools:context=".DisplayStats">
 
 
-    <Chronometer
-        android:id="@+id/study_chronometer"
-        android:layout_width="186dp"
-        android:layout_height="69dp"
-        android:layout_marginStart="8dp"
-        android:layout_marginTop="60dp"
-        android:layout_marginEnd="28dp"
-        android:textAlignment="center"
-        android:textSize="36sp"
-        app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintHorizontal_bias="1.0"
-        app:layout_constraintStart_toEndOf="@+id/textView12"
-        app:layout_constraintTop_toBottomOf="@+id/textView11" />
-
     <Button
-        android:id="@+id/pause"
+        android:id="@+id/button_end"
         android:layout_width="112dp"
         android:layout_height="51dp"
         android:layout_marginStart="8dp"
         android:layout_marginEnd="8dp"
         android:layout_marginBottom="224dp"
-        android:text="Pause"
+        android:text="End"
         android:textSize="18sp"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
@@ -36,30 +22,11 @@
         app:layout_constraintStart_toStartOf="parent" />
 
 
-    <Chronometer
-        android:id="@+id/break_chronometer"
-        android:layout_width="186dp"
-        android:layout_height="69dp"
-        android:layout_marginStart="20dp"
-        android:layout_marginTop="60dp"
-        android:layout_marginEnd="28dp"
-        android:text="Resume"
-        android:textAlignment="center"
-        android:textSize="36sp"
-        android:visibility="invisible"
-        app:layout_constraintBottom_toTopOf="@+id/pause"
-        app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintHorizontal_bias="1.0"
-        app:layout_constraintStart_toEndOf="@+id/textView14"
-        app:layout_constraintTop_toTopOf="@+id/study_chronometer"
-        app:layout_constraintVertical_bias="0.0" />
-
     <Button
         android:id="@+id/resume"
         android:layout_width="112dp"
         android:layout_height="51dp"
         android:layout_marginStart="8dp"
-        android:layout_marginTop="8dp"
         android:layout_marginEnd="8dp"
         android:layout_marginBottom="232dp"
         android:text="Resume"
@@ -68,9 +35,7 @@
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintHorizontal_bias="0.498"
-        app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/break_chronometer"
-        app:layout_constraintVertical_bias="1.0" />
+        app:layout_constraintStart_toStartOf="parent" />
 
     <TextView
         android:id="@+id/textView11"
@@ -112,19 +77,50 @@
         app:layout_constraintVertical_bias="0.241" />
 
     <TextView
-        android:id="@+id/textView15"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
+        android:id="@+id/textView_motivations"
+        android:layout_width="321dp"
+        android:layout_height="122dp"
         android:layout_marginStart="8dp"
         android:layout_marginTop="8dp"
         android:layout_marginEnd="8dp"
         android:layout_marginBottom="8dp"
         android:text='"Enter Motivational Message"'
-        android:textSize="24sp"
+        android:textAlignment="center"
+        android:textSize="19sp"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/resume" /><![CDATA[
+        app:layout_constraintTop_toBottomOf="@+id/resume" />
+
+    <TextView
+        android:id="@+id/textView_studyTime"
+        android:layout_width="121dp"
+        android:layout_height="33dp"
+        android:layout_marginStart="8dp"
+        android:layout_marginTop="68dp"
+        android:layout_marginEnd="12dp"
+        android:text="0:0:0"
+        android:textSize="24sp"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintHorizontal_bias="0.272"
+        app:layout_constraintStart_toEndOf="@+id/textView12"
+        app:layout_constraintTop_toBottomOf="@+id/textView11" />
+
+    <TextView
+        android:id="@+id/textView_breakTime"
+        android:layout_width="120dp"
+        android:layout_height="31dp"
+        android:layout_marginStart="8dp"
+        android:layout_marginTop="82dp"
+        android:layout_marginEnd="12dp"
+        android:layout_marginBottom="70dp"
+        android:text="0:0:0"
+        android:textSize="24sp"
+        app:layout_constraintBottom_toTopOf="@+id/resume"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintHorizontal_bias="0.269"
+        app:layout_constraintStart_toEndOf="@+id/textView14"
+        app:layout_constraintTop_toBottomOf="@+id/textView_studyTime" /><![CDATA[
 
 
 
