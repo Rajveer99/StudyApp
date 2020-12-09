@@ -5,5 +5,15 @@
         android:id="@+id/About"
         android:orderInCategory="100"
         />
+    <item
+        android:title="Enable Access"
+        android:id="@+id/id_setEnable"
+        android:orderInCategory="101"
+        />
+    <item
+        android:title="Disable Access"
+        android:id="@+id/id_set"
+        android:orderInCategory="101"
+        />
 
 </menu>

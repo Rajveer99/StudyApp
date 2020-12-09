@@ -2,6 +2,7 @@ package com.example.owner.studi2;
 
 import android.app.ActivityManager;
 import android.app.AlertDialog;
+import android.app.Notification;
 import android.app.admin.DevicePolicyManager;
 import android.content.ComponentName;
 import android.content.DialogInterface;
@@ -20,8 +21,9 @@ import android.widget.CompoundButton;
 import android.widget.ProgressBar;
 import android.widget.TextView;
 import android.widget.Toast;
-
+import android.os.Handler;
 import java.util.ArrayList;
+
 
 public class DisplayStats<study> extends AppCompatActivity {
     Button button_start;
@@ -121,7 +123,7 @@ public class DisplayStats<study> extends AppCompatActivity {
             public void onClick(View view) {
                 if(((CompoundButton) view).isChecked()){
                     goalsCompleted.add(checkBox2.getText().toString());
-                    checkBox2.setPaintFlags(checkBox1.getPaintFlags() | Paint.STRIKE_THRU_TEXT_FLAG);
+                    checkBox2.setPaintFlags(checkBox2.getPaintFlags() | Paint.STRIKE_THRU_TEXT_FLAG);
                     checkBox2.setEnabled(false);
                 }
             }
@@ -131,7 +133,7 @@ public class DisplayStats<study> extends AppCompatActivity {
             public void onClick(View view) {
                 if(((CompoundButton) view).isChecked()){
                     goalsCompleted.add(checkBox3.getText().toString());
-                    checkBox3.setPaintFlags(checkBox1.getPaintFlags() | Paint.STRIKE_THRU_TEXT_FLAG);
+                    checkBox3.setPaintFlags(checkBox3.getPaintFlags() | Paint.STRIKE_THRU_TEXT_FLAG);
                     checkBox3.setEnabled(false);
                 }
             }
@@ -142,7 +144,7 @@ public class DisplayStats<study> extends AppCompatActivity {
             public void onClick(View view) {
                 if(((CompoundButton) view).isChecked()){
                     goalsCompleted.add(checkBox4.getText().toString());
-                    checkBox4.setPaintFlags(checkBox1.getPaintFlags() | Paint.STRIKE_THRU_TEXT_FLAG);
+                    checkBox4.setPaintFlags(checkBox4.getPaintFlags() | Paint.STRIKE_THRU_TEXT_FLAG);
                     checkBox4.setEnabled(false);                }
             }
         });
@@ -152,7 +154,7 @@ public class DisplayStats<study> extends AppCompatActivity {
             public void onClick(View view) {
                 if(((CompoundButton) view).isChecked()){
                     goalsCompleted.add(checkBox5.getText().toString());
-                    checkBox5.setPaintFlags(checkBox1.getPaintFlags() | Paint.STRIKE_THRU_TEXT_FLAG);
+                    checkBox5.setPaintFlags(checkBox5.getPaintFlags() | Paint.STRIKE_THRU_TEXT_FLAG);
                     checkBox5.setEnabled(false);
                 }
             }
@@ -173,9 +175,9 @@ public class DisplayStats<study> extends AppCompatActivity {
         mode = false;
         AlertDialog.Builder builder = new AlertDialog.Builder(DisplayStats.this);
         builder.setCancelable(true);
-
+        double percentCompleted;
         if (userGoalList.size() > 0){
-            float percentCompleted = goalsCompleted.size()/userGoalList.size() * 100;
+            percentCompleted = ((double) goalsCompleted.size()/ (double) userGoalList.size()) * 100;
             if (percentCompleted == 100){
                 builder.setTitle("Congratulations");
                 builder.setMessage("Amazing work!! You've accomplished " + (int) percentCompleted + "% of your goals");
@@ -189,6 +191,10 @@ public class DisplayStats<study> extends AppCompatActivity {
                 builder.setMessage("You've not been able to accomplish your goals. " +
                         "It's okay. Let's try again!");
             }
+        }
+        else{
+            builder.setTitle("Completed");
+            builder.setMessage("Great Work!");
         }
 
         builder.setNegativeButton("Try Again", new DialogInterface.OnClickListener() {
@@ -213,6 +219,7 @@ public class DisplayStats<study> extends AppCompatActivity {
     }
 
     public void studyTimer(){
+
         new CountDownTimer(userStudyTime_milli, 1000) {
             public void onTick(long millisUntilFinished) {
                 if (mode) {
@@ -237,8 +244,37 @@ public class DisplayStats<study> extends AppCompatActivity {
         }.start();
     }
     public void switchToBreakTime() {
+
         if (count < userRepetitions) {
-            new CountDownTimer(userBreakTime_milli, 1000) {
+
+            int secs = 10; // Delay in seconds
+
+            utils.delay(secs, new utils.DelayCallback() {
+                @Override
+                public void afterDelay() {
+                    new CountDownTimer(userBreakTime_milli, 1000) {
+                        public void onTick(long millisUntilFinished) {
+                            if (mode) {
+                                breakCounter++;
+                                float minute = (float) millisUntilFinished / 60000;
+                                // breakTime.setText(String.valueOf(minutesToMilli(breakCounter)));
+                                breakTime.setText(minutesToMilli(breakCounter));
+                                float val = (float) minute / userBreakTime;
+                                progressBar.setProgress((int) Math.floor(100.0 * (val)));
+                            } else {
+                                breakCounter = 0;
+                                studyCounter = 0;
+                                cancel();
+                            }
+                        }
+                        public void onFinish() {
+                            ringNotification();
+                            studyTimer();
+                        }
+                    }.start();
+                }
+            });
+            /*new CountDownTimer(userBreakTime_milli, 1000) {
                 public void onTick(long millisUntilFinished) {
                     if (mode) {
                         breakCounter++;
@@ -257,7 +293,7 @@ public class DisplayStats<study> extends AppCompatActivity {
                     ringNotification();
                     studyTimer();
                 }
-            }.start();
+            }.start();*/
         }
         else{
             endActivity();
@@ -277,6 +313,7 @@ public class DisplayStats<study> extends AppCompatActivity {
             Uri notification = RingtoneManager.getDefaultUri(RingtoneManager.TYPE_NOTIFICATION);
             Ringtone r = RingtoneManager.getRingtone(getApplicationContext(), notification);
             r.play();
+
         } catch (Exception e) {
             e.printStackTrace();
         }

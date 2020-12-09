@@ -68,18 +68,15 @@ public class enterParameters extends AppCompatActivity {
                     breakTimeInput = Integer.valueOf(breakTime.getText().toString());
                     cyclesInput = Integer.valueOf(cycles.getText().toString());
 
-                    if (studyTimeInput == 0 || breakTimeInput == 0 || cyclesInput == 0) {
+                    if (studyTimeInput <= 0 || breakTimeInput <= 0 || cyclesInput <= 0) {
 
                         Poppop("Please enter values greater than 0");
-                    /*} else if (studyTimeInput < 15 && breakTimeInput > 10) {
-                        Poppop("Study Time must be longer 20 minutes and Break Time " +
-                                "must not be longer than 10 minutes");
-
-                    } else if (studyTimeInput < 15) {
-                        Poppop("Study Time must be >= 20 minutes");
-                    } else if (breakTimeInput > 10) {
-                        Poppop("Break Time must < 10 minutes");
-*/
+                    }else if (studyTimeInput < 15) {
+                        Poppop("Study Time must be longer than 15 minutes");
+                    } else if (breakTimeInput > studyTimeInput) {
+                        Poppop("Break Time cannot be longer than Study Time");
+                    }  else if (breakTimeInput > 30) {
+                        Poppop("Break Time must be shorter than 30 minutes");
                     } else {
                         Intent intent = new Intent(enterParameters.this, DisplayStats.class);
                         intent.putExtra("StudyTime", studyTimeInput);
@@ -92,8 +89,8 @@ public class enterParameters extends AppCompatActivity {
                     createToast("Please don't leave anything blank");
                 }
             }
-        });
 
+        });
 
         enterGoalButton.setOnClickListener(new View.OnClickListener() {
             @Override
