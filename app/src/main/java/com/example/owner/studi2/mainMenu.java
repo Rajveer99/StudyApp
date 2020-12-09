@@ -8,16 +8,13 @@ import android.view.MenuItem;
 import android.view.View;
 import android.widget.Button;
 
-
 //This is the Main Menu Window
 public class mainMenu extends AppCompatActivity {
-
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
         setTitle("Main Menu");
-
         configureNextButton();
     }
 
@@ -26,23 +23,16 @@ public class mainMenu extends AppCompatActivity {
         getMenuInflater().inflate(R.menu.main_menu, menu);
         return true;
     }
-
     @Override
-    /**
-     * Switches to About us page
-     */
+    ////Switches to About us
     public boolean onOptionsItemSelected(MenuItem item){
         int id = item.getItemId();
         if(id == R.id.About){
-            startActivity(new Intent(mainMenu.this, AboutUs.class));
-
+            startActivity(new Intent(mainMenu.this, AboutUs.class)); //Switches to About us
             return true;
         }
-
         return true;
     }
-
-
 
     private void configureNextButton() {
         Button nextActivityButton = (Button) findViewById(R.id.second_activity);
@@ -52,6 +42,5 @@ public class mainMenu extends AppCompatActivity {
                 startActivity(new Intent(mainMenu.this, enterParameters.class));
             }
         });
-
     }
 }

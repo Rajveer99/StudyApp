@@ -2,8 +2,10 @@ package com.example.owner.studi2;
 
 import android.app.Activity;
 import android.app.ActivityManager;
+import android.app.AlertDialog;
 import android.app.admin.DevicePolicyManager;
 import android.content.ComponentName;
+import android.content.DialogInterface;
 import android.content.Intent;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
@@ -13,23 +15,24 @@ import android.view.View;
 import android.widget.Button;
 import android.widget.TextView;
 import android.widget.Toast;
+import java.util.ArrayList;
 
 public class enterParameters extends AppCompatActivity {
 
+    ArrayList<String> listGoals = new ArrayList<String>();
+    private int goalCounter;
     //store data from user
     int breakTimeInput;
     int cyclesInput;
     int studyTimeInput;
-
     TextView breakTime;
     TextView studyTime;
     TextView cycles;
-
     Button submitButton;
-
     public static final int RESULT_ENABLE = 11;
-
+    private Button enterGoalButton;
     private DevicePolicyManager devicePolicyManager;
+    private TextView enterGoalText;
     private ActivityManager activityManager;
     private ComponentName compName;
     @Override
@@ -46,12 +49,13 @@ public class enterParameters extends AppCompatActivity {
         studyTime = (TextView) findViewById(R.id.study);
         cycles = (TextView) findViewById(R.id.repetitions);
         breakTime = (TextView) findViewById(R.id.breakTime);
+        enterGoalButton = (Button) findViewById(R.id.enterGoalsButton);
+        enterGoalText = (TextView) findViewById(R.id.enterGoalsText);
 
         Intent intent1 = new Intent(DevicePolicyManager.ACTION_ADD_DEVICE_ADMIN);
         intent1.putExtra(DevicePolicyManager.EXTRA_DEVICE_ADMIN, compName);
         intent1.putExtra(DevicePolicyManager.EXTRA_ADD_EXPLANATION, "Additional text explaining why we need this permission");
         startActivityForResult(intent1, RESULT_ENABLE);
-
         submitButton = (Button) findViewById(R.id.button);
 
         submitButton.setOnClickListener(new View.OnClickListener() {
@@ -64,43 +68,70 @@ public class enterParameters extends AppCompatActivity {
                     breakTimeInput = Integer.valueOf(breakTime.getText().toString());
                     cyclesInput = Integer.valueOf(cycles.getText().toString());
 
+                    if (studyTimeInput == 0 || breakTimeInput == 0 || cyclesInput == 0) {
 
-                    if(studyTimeInput == 0 || breakTimeInput == 0 || cyclesInput == 0){
-                        createToast("Please enter values greater than 0");
-                    }
-                    else if (studyTimeInput < 15 && breakTimeInput > 10) {
-                        createToast("Study Time must be longer 20 minutes and Break Time " +
+                        Poppop("Please enter values greater than 0");
+                    /*} else if (studyTimeInput < 15 && breakTimeInput > 10) {
+                        Poppop("Study Time must be longer 20 minutes and Break Time " +
                                 "must not be longer than 10 minutes");
 
                     } else if (studyTimeInput < 15) {
-                        createToast("Study Time must be >= 20 minutes");
+                        Poppop("Study Time must be >= 20 minutes");
                     } else if (breakTimeInput > 10) {
-                        createToast("Break Time must < 10 minutes");
-
+                        Poppop("Break Time must < 10 minutes");
+*/
                     } else {
-
                         Intent intent = new Intent(enterParameters.this, DisplayStats.class);
                         intent.putExtra("StudyTime", studyTimeInput);
                         intent.putExtra("BreakTime", breakTimeInput);
                         intent.putExtra("Cycles", cyclesInput);
+                        intent.putExtra("goals", listGoals);
                         startActivity(intent);
-
                     }
-
-                }catch (Exception e){
+                } catch (Exception e) {
                     createToast("Please don't leave anything blank");
                 }
             }
         });
 
-    }
 
+        enterGoalButton.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                if (goalCounter < 5) {
+                    String goal = enterGoalText.getText().toString();
+                    if(listGoals.contains(goal)){
+                        createToast("Goal already added. Please add a new one");
+                    }
+                    else{
+                        listGoals.add(goal);
+                        enterGoalText.setText("");
+                        goalCounter++;
+                    }
+                }
+                else{
+                    createToast("Can't add more than 5 Goals");
+                }
+            }
+        });
+    }
+    private void Poppop(String text){
+        AlertDialog.Builder builder = new AlertDialog.Builder(enterParameters.this);
+        builder.setCancelable(true);
+        builder.setTitle("Error");
+        builder.setMessage(text);
+        builder.setPositiveButton("OK", new DialogInterface.OnClickListener() {
+            @Override
+            public void onClick(DialogInterface dialogInterface, int i) {
+                dialogInterface.cancel();
+            }
+        });
+        builder.show();
+    }
     @Override
     protected void onResume() {
         super.onResume();
         boolean isActive = devicePolicyManager.isAdminActive(compName);
-        //disable.setVisibility(isActive ? View.VISIBLE : View.GONE);
-        //submitButton.setVisibility(isActive ? View.GONE : View.VISIBLE);
     }
 
     //Creates Toasts
@@ -122,11 +153,6 @@ public class enterParameters extends AppCompatActivity {
         });
     }
 
-
-    /**
-     * @param menu
-     * @return
-     */
     @Override
     public boolean onCreateOptionsMenu(Menu menu){
         getMenuInflater().inflate(R.menu.main, menu);
@@ -136,12 +162,12 @@ public class enterParameters extends AppCompatActivity {
     @Override
     public boolean onOptionsItemSelected(MenuItem item){
         int id = item.getItemId();
-        if(id == R.id.id_profile){
+       /* if(id == R.id.id_profile){
             startActivity(new Intent(enterParameters.this, enterPassword.class));
 
             //write logic
             return true;
-        }
+        }*/
         if(id == R.id.id_set){
             devicePolicyManager.removeActiveAdmin(compName);
             //disable.setVisibility(View.GONE);
